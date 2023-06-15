@@ -15,5 +15,5 @@ jobs:
           goos: linux
           goarch: amd64
           ldflags: -s -w
-          release-tag: main
+          release_tag: main
 
