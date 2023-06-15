@@ -1,3 +1,10 @@
+name: build-bin
+
+on:
+  push:
+    branches:
+      - 'main'
+
 
 jobs:
   bin:
