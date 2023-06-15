@@ -40,8 +40,8 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
         
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USERNAME}@${HOSTNAME} '
+          echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${USERNAME}@${HOSTNAME} '
             docker pull adrielananta/gohelloworld-helloworld:latest &&
             docker container stop helloworld &&
             docker container rm helloworld && 
