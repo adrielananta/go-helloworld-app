@@ -49,7 +49,7 @@ jobs:
           instance-ids: ${{ secrets.INSTANCE_ID }}
 
           working-directory: /home/ubuntu
-          command: ./app/app
+          command: fuser -k 8080/tcp && ./app/app & disown
           comment: Pull and run container
 
       # Catch SSM outputs
