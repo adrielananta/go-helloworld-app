@@ -32,7 +32,7 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@v2
+      - uses: actions/checkout@v2 
       - name: Deploy
         env:
           PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
