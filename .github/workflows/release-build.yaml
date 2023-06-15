@@ -28,7 +28,7 @@ jobs:
         host: ${{ secrets.HOSTNAME }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.AWS_PRIVATE_KEY }}
-        port: 80
+        port: 22
         source: "app"         
         target: "app"
 
