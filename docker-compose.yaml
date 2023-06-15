@@ -4,10 +4,4 @@ services:
   helloworld:
     build: .
     ports:
-      - 8080
-  nginx:
-    build: ./nginx
-    ports:
-      - 80:80
-    depends_on:
-      - helloworld
+      - 80:8080
