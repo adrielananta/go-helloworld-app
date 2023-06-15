@@ -31,19 +31,23 @@ jobs:
   deploy:
     needs: docker
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2 
-      - name: Deploy
-        env:
-          PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
-          HOSTNAME: ${{ secrets.HOSTNAME }}
-          USERNAME: ${{ secrets.USERNAME }}
-        
-        run: |
-          echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ${USERNAME}@${HOSTNAME} '
-            docker pull adrielananta/gohelloworld-helloworld:latest &&
-            docker container stop helloworld || true &&
-            docker container rm helloworld || true && 
-            docker run --detach --name helloworld -p 80:8080 adrielananta/gohelloworld-helloworld:latest
-          '
+      - uses: actions/checkout@v2
+
+      - name: AWS SSM Send-Command
+        uses: peterkimzz/aws-ssm-send-command@master
+        id: ssm
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          instance-ids: ${{ secrets.INSTANCE_ID }}
+
+          working-directory: /home/ubuntu
+          command: docker pull adrielananta/gohelloworld-helloworld:latest && docker container stop helloworld || true && docker container rm helloworld || true && docker run --detach --name helloworld -p 80:8080 adrielananta/gohelloworld-helloworld:latest
+          comment: Pull and run container
+
+      # Catch SSM outputs
+      - name: Get the outputs
+        run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"
