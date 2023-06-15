@@ -27,3 +27,22 @@ jobs:
         with:
           push: true
           tags: adrielananta/gohelloworld-helloworld:latest
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v2
+      - name: Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+          HOSTNAME: ${{ secrets.HOSTNAME }}
+          USERNAME: ${{ secrets.USERNAME }}
+        
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -i private_key ${USERNAME}@${HOSTNAME} '
+            docker container stop helloworld &&
+            docker container rm helloworld && 
+            docker run --detach --name helloworld --pull always -p 80:8080 adrielananta/gohelloworld-helloworld
+          '
