@@ -49,7 +49,7 @@ jobs:
           instance-ids: ${{ secrets.INSTANCE_ID }}
 
           working-directory: /home/ubuntu
-          command: ./app
+          command: ./app/app
           comment: Pull and run container
 
       # Catch SSM outputs
