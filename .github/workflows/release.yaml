@@ -41,8 +41,9 @@ jobs:
         
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -i private_key ${USERNAME}@${HOSTNAME} '
+          ssh -o StrictHostKeyChecking=no -i private_key ${USERNAME}@${HOSTNAME} '
+            docker pull adrielananta/gohelloworld-helloworld:latest &&
             docker container stop helloworld &&
             docker container rm helloworld && 
-            docker run --detach --name helloworld --pull always -p 80:8080 adrielananta/gohelloworld-helloworld
+            docker run --detach --name helloworld -p 80:8080 adrielananta/gohelloworld-helloworld:latest
           '
