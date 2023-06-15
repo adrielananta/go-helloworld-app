@@ -32,8 +32,8 @@ jobs:
         source: "app"         
         target: "app"
 
-deploy:
-    needs: docker
+  deploy:
+    needs: bin
     runs-on: ubuntu-latest
 
     steps:
